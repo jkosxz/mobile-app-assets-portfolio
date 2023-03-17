@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">assets-portfolio</string>
+    <string name="addViewButton">Dodaj kategorię</string>
 </resources>

@@ -2,7 +2,12 @@ package com.example.assets_portfolio;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,4 +16,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
+    public void add(View v){
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        LinearLayout linearLayout = findViewById(R.id.categoryLinearLayout);
+        View view = inflater.inflate(R.layout.category, linearLayout);
+        linearLayout.addView(view);
+
+
+    }
+
+
 }
