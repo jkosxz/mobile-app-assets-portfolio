@@ -2,4 +2,6 @@
     <string name="app_name">assets-portfolio</string>
     <string name="addViewButton">Dodaj kategorię</string>
     <string name="textView_categoryName">Podaj nazwę kategorii</string>
+    <string name="textView_catDescription">Podaj opis kategorii</string>
+    <string name="button_returnToMain">Zatwierdź</string>
 </resources>
