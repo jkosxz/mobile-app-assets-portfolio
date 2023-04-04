@@ -1,44 +1,67 @@
 package com.example.assets_portfolio;
 
-import androidx.appcompat.app.AlertDialog;
+import static android.content.ContentValues.TAG;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button test;
+    Button btn_addView;
+    LinearLayout rootLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        test = findViewById(R.id.addViewButton);
+        btn_addView = findViewById(R.id.addViewButton);
+        rootLayout = (LinearLayout) findViewById(R.id.categoryLinearLayout);
 
+        ActivityResultLauncher<Intent> sender = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Log.d(TAG, "on activity ");
+                    if (result.getResultCode() == 2){
+                        Intent intent = result.getData();
 
+                        if (intent != null){
+                            String catName = intent.getStringExtra("catName");
+                            String catDesc = intent.getStringExtra("catDesc");
+
+                            addCategory(catName, catDesc);
+                        }
+                    }
+                }
+        );
+
+        btn_addView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, addNewCategoryActivity.class);
+                sender.launch(intent);
+            }
+        });
     }
-    public void addCategory(View view){
-        LinearLayout rootLayout = (LinearLayout) findViewById(R.id.categoryLinearLayout);
+    public void addCategory(String catName, String catDesc){
+
         View child = getLayoutInflater().inflate(R.layout.test, null);
         rootLayout.addView(child);
 
     }
-
-    public void goToAddNewCategory(View v){
-        Intent i = new Intent(this, addNewCategoryActivity.class);
-        startActivityForResult(i, 0); // ma zwracac pakiet stringow potrzebnych do zrobienia view category i potem dodania go
+    public void goToCategory(View v){
+        Intent i = new Intent(this, categoryActivity.class);
+        startActivity(i);
     }
-
-
-
 }
