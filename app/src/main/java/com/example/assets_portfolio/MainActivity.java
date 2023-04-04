@@ -60,4 +60,8 @@ public class MainActivity extends AppCompatActivity {
         rootLayout.addView(child);
 
     }
+    public void goToCategory(View v){
+        Intent i = new Intent(this, categoryActivity.class);
+        startActivity(i);
+    }
 }

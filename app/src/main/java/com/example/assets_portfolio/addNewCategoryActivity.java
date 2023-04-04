@@ -28,4 +28,6 @@ public class addNewCategoryActivity extends AppCompatActivity {
         finish();
 
     }
+
+
 }
