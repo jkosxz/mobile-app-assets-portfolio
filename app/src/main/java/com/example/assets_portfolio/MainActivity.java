@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,10 +14,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
-
     Button btn_addView;
     LinearLayout rootLayout;
 
@@ -55,13 +59,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void addCategory(String catName, String catDesc){
-
         View child = getLayoutInflater().inflate(R.layout.test, null);
         rootLayout.addView(child);
+        TextView name = findViewById(R.id.categoryCard);
+        name.setText(catName);
 
     }
     public void goToCategory(View v){
         Intent i = new Intent(this, categoryActivity.class);
         startActivity(i);
     }
+
 }
