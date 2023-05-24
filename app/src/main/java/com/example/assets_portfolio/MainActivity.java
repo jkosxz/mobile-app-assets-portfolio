@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = result.getData();
 
                         if (intent != null){
-                            String catName = intent.getStringExtra("catName");
-                            String catDesc = intent.getStringExtra("catDesc");
+                            String lotSymbol = intent.getStringExtra("lotSymbol");
+                            String lotAmount = intent.getStringExtra("lotAmount");
+                            String lotPrice = intent.getStringExtra("lotPrice");
 
-                            addCategory(catName, catDesc);
+
+                            addLot(lotSymbol, lotAmount, lotPrice);
                         }
                     }
                 }
@@ -70,12 +73,10 @@ public class MainActivity extends AppCompatActivity {
         btn_addView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, addNewCategoryActivity.class);
+                Intent intent = new Intent(MainActivity.this, addingLot.class);
                 sender.launch(intent);
             }
         });
-
-
         try {
             Log.d("123", "CACHING");
             cacheSymbols();
@@ -83,18 +84,10 @@ public class MainActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
-    public void addCategory(String catName, String catDesc){
-        View child = getLayoutInflater().inflate(R.layout.test, null);
-        rootLayout.addView(child);
-        TextView name = findViewById(R.id.categoryCard);
-        name.setText(catName);
+    public void addLot(String symbol, String amount, String price){
+
 
     }
-    public void goToCategory(View v){
-        Intent i = new Intent(this, categoryActivity.class);
-        startActivity(i);
-    }
-
     public void cacheSymbols() throws IOException {
         JsonObjectRequest jor = new JsonObjectRequest("https://finnhub.io/api/v1/search?q=apple&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g", null, new Response.Listener<JSONObject>() {
             @Override
@@ -122,22 +115,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 byte[] data = new byte[(int) myFile.length()];
                 try {
-                    fis.read(data);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
                     fis.close();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
 
                 String str = null;
-                try {
-                    str = new String(data, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    throw new RuntimeException(e);
-                }
+                str = new String(data, StandardCharsets.UTF_8);
 
                 Log.d("API FROM FILE", str);
             }
