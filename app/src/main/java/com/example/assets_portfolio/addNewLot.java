@@ -30,7 +30,7 @@ public class addNewLot extends AppCompatActivity {
         lotAmount = (TextView) findViewById(R.id.lotAmount_et);
         lotPrice = (TextView) findViewById(R.id.lotPrice_et);
     }
-    public void addCategoryToMain(View v){
+    public void addLotToCategory(View v){
         Intent i = new Intent();
         i.putExtra("lotName", lotName.getText().toString());
         i.putExtra("lotAmount", lotAmount.getText().toString());
