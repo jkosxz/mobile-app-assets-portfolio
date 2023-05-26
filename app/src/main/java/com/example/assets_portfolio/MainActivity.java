@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.FileUtils;
 
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -85,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void addLot(String symbol, String amount, String price){
-
-
+        View newLot = getLayoutInflater().inflate(R.layout.newlot, null);
+        rootLayout.addView(newLot);
     }
     public void cacheSymbols() throws IOException {
         JsonObjectRequest jor = new JsonObjectRequest("https://finnhub.io/api/v1/search?q=apple&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g", null, new Response.Listener<JSONObject>() {
@@ -103,27 +104,20 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 try {
+                    Log.d("Z API", response.toString());
                     fos.write(response.toString().getBytes());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 FileInputStream fis = null;
                 try {
-                    fis = new FileInputStream(myFile);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                byte[] data = new byte[(int) myFile.length()];
-                try {
-                    fis.close();
+                    String content = FileUtils.readFileToString(myFile, "UTF-8");
+                    Log.d("Z PLIKU", content.toString());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
 
-                String str = null;
-                str = new String(data, StandardCharsets.UTF_8);
 
-                Log.d("API FROM FILE", str);
             }
         }, new Response.ErrorListener() {
             @Override
