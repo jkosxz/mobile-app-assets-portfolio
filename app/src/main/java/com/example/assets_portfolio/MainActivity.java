@@ -10,12 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -37,6 +39,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class MainActivity extends AppCompatActivity {
     Button btn_addView;
@@ -85,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void addLot(String symbol, String amount, String price){
-
+        View newLot = getLayoutInflater().inflate(R.layout.newlot, null);
+        rootLayout.addView(newLot);
 
     }
     public void cacheSymbols() throws IOException {
@@ -101,29 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-
-                try {
-                    fos.write(response.toString().getBytes());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                FileInputStream fis = null;
-                try {
-                    fis = new FileInputStream(myFile);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                byte[] data = new byte[(int) myFile.length()];
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-                String str = null;
-                str = new String(data, StandardCharsets.UTF_8);
-
-                Log.d("API FROM FILE", str);
             }
         }, new Response.ErrorListener() {
             @Override
