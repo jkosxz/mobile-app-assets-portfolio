@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -95,6 +96,36 @@ public class MainActivity extends AppCompatActivity {
         TextView s = newLot.findViewById(R.id.symbol_tv);
         s.setText(symbol);
 
+        TextView a = newLot.findViewById(R.id.amount_tv);
+        a.setText(amount);
+
+        TextView p = newLot.findViewById(R.id.price_tv);
+        p.setText(price);
+
+
+        JsonObjectRequest jor = new JsonObjectRequest(String.format("https://finnhub.io/api/v1/quote?symbol=%s&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g", symbol),
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String a = response.get("c").toString();
+                    Log.d("response", a);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jor);
+
+
+        TextView b = newLot.findViewById(R.id.bilans_tv);
+        b.setText("1");
 
     }
     public void cacheSymbols() throws IOException {
