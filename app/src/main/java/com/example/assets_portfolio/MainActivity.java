@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         TextView a = newLot.findViewById(R.id.amount_tv);
         a.setText(amount);
 
-        TextView p = newLot.findViewById(R.id.price_tv);
+        TextView p = newLot.findViewById(R.id.price_bought_tv);
         p.setText(price);
 
 
@@ -108,8 +108,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    String a = response.get("c").toString();
-                    Log.d("response", a);
+                    String apiShotResult = response.get("c").toString();
+                    Log.d("response", apiShotResult);
+
+                    TextView b = newLot.findViewById(R.id.bilans_tv);
+                    b.setText(String.format("%s$", apiShotResult));
+
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -122,10 +126,6 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jor);
-
-
-        TextView b = newLot.findViewById(R.id.bilans_tv);
-        b.setText("1");
 
     }
     public void cacheSymbols() throws IOException {
