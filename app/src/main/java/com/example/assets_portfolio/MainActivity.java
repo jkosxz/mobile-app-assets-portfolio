@@ -92,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
         View newLot = getLayoutInflater().inflate(R.layout.newlot, null);
         rootLayout.addView(newLot);
         newLot.setTag(symbol);
+        TextView s = newLot.findViewById(R.id.symbol_tv);
+        s.setText(symbol);
+
 
     }
     public void cacheSymbols() throws IOException {
