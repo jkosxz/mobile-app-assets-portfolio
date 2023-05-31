@@ -93,14 +93,14 @@ public class MainActivity extends AppCompatActivity {
         View newLot = getLayoutInflater().inflate(R.layout.newlot, null);
         rootLayout.addView(newLot);
         newLot.setTag(symbol);
-        TextView s = newLot.findViewById(R.id.symbol_tv);
-        s.setText(symbol);
+        TextView lotSymbol = newLot.findViewById(R.id.symbol_tv);
+        lotSymbol.setText(symbol);
 
-        TextView a = newLot.findViewById(R.id.amount_tv);
-        a.setText(amount);
+        TextView lotAmount = newLot.findViewById(R.id.amount_tv);
+        lotAmount.setText(amount);
 
-        TextView p = newLot.findViewById(R.id.price_bought_tv);
-        p.setText(price);
+        TextView priceBought = newLot.findViewById(R.id.price_bought_tv);
+        priceBought.setText(price);
 
 
         JsonObjectRequest jor = new JsonObjectRequest(String.format("https://finnhub.io/api/v1/quote?symbol=%s&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g", symbol),
@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
                     String apiShotResult = response.get("c").toString();
                     Log.d("response", apiShotResult);
 
-                    TextView b = newLot.findViewById(R.id.bilans_tv);
-                    b.setText(String.format("%s$", apiShotResult));
+                    TextView currentPrice = newLot.findViewById(R.id.current_price_tv);
+                    currentPrice.setText(String.format("%s$", apiShotResult));
 
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
