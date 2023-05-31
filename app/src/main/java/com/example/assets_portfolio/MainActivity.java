@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
     public void addLot(String symbol, String amount, String price){
         View newLot = getLayoutInflater().inflate(R.layout.newlot, null);
         rootLayout.addView(newLot);
+        newLot.setTag(symbol);
 
     }
     public void cacheSymbols() throws IOException {
@@ -114,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jor);
+    }
+
+    public void deleteLot(View v){
+        rootLayout.removeView((View) v.getParent());
     }
 
 }
