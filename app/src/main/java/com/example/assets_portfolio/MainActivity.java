@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btn_addView = findViewById(R.id.addViewButton);
-        rootLayout = (LinearLayout) findViewById(R.id.categoryLinearLayout);
+        rootLayout = findViewById(R.id.categoryLinearLayout);
 
         ActivityResultLauncher<Intent> sender = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -75,12 +75,9 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        btn_addView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, addingLot.class);
-                sender.launch(intent);
-            }
+        btn_addView.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, addingLot.class);
+            sender.launch(intent);
         });
         try {
             Log.d("123", "CACHING");
@@ -104,24 +101,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         JsonObjectRequest jor = new JsonObjectRequest(String.format("https://finnhub.io/api/v1/quote?symbol=%s&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g", symbol),
-                null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String apiShotResult = response.get("c").toString();
-                    Log.d("response", apiShotResult);
+                null, response -> {
+                    try {
+                        String apiShotResult = response.get("c").toString();
+                        Log.d("response", apiShotResult);
 
-                    TextView currentPrice = newLot.findViewById(R.id.current_price_tv);
-                    currentPrice.setText(String.format("%s$", apiShotResult));
+                        TextView currentPrice = newLot.findViewById(R.id.current_price_tv);
+                        currentPrice.setText(String.format("%s$", apiShotResult));
 
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, error -> {
         });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -129,24 +120,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void cacheSymbols() throws IOException {
-        JsonObjectRequest jor = new JsonObjectRequest("https://finnhub.io/api/v1/search?q=apple&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g", null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                File internalStorageDir = getFilesDir();
-                File myFile = new File(internalStorageDir, "symbols.json");
+        JsonObjectRequest jor = new JsonObjectRequest("https://finnhub.io/api/v1/search?q=apple&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g",
+                null, response -> {
+                    File internalStorageDir = getFilesDir();
+                    File myFile = new File(internalStorageDir, "symbols.json");
 
-                FileOutputStream fos = null;
-                try {
-                    fos = new FileOutputStream(myFile);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(myFile);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, error -> {
+                });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jor);
