@@ -10,12 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -23,8 +26,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.FileUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -38,6 +41,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class MainActivity extends AppCompatActivity {
     Button btn_addView;
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btn_addView = findViewById(R.id.addViewButton);
-        rootLayout = (LinearLayout) findViewById(R.id.categoryLinearLayout);
+        rootLayout = findViewById(R.id.categoryLinearLayout);
 
         ActivityResultLauncher<Intent> sender = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -71,12 +75,9 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        btn_addView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, addingLot.class);
-                sender.launch(intent);
-            }
+        btn_addView.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, addingLot.class);
+            sender.launch(intent);
         });
         try {
             Log.d("123", "CACHING");
@@ -88,45 +89,57 @@ public class MainActivity extends AppCompatActivity {
     public void addLot(String symbol, String amount, String price){
         View newLot = getLayoutInflater().inflate(R.layout.newlot, null);
         rootLayout.addView(newLot);
-    }
-    public void cacheSymbols() throws IOException {
-        JsonObjectRequest jor = new JsonObjectRequest("https://finnhub.io/api/v1/search?q=apple&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g", null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                File internalStorageDir = getFilesDir();
-                File myFile = new File(internalStorageDir, "symbols.json");
+        newLot.setTag(symbol);
+        TextView lotSymbol = newLot.findViewById(R.id.symbol_tv);
+        lotSymbol.setText(symbol);
 
-                FileOutputStream fos = null;
-                try {
-                    fos = new FileOutputStream(myFile);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
+        TextView lotAmount = newLot.findViewById(R.id.amount_tv);
+        lotAmount.setText(amount);
 
-                try {
-                    Log.d("Z API", response.toString());
-                    fos.write(response.toString().getBytes());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                FileInputStream fis = null;
-                try {
-                    String content = FileUtils.readFileToString(myFile, "UTF-8");
-                    Log.d("Z PLIKU", content.toString());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        TextView priceBought = newLot.findViewById(R.id.price_bought_tv);
+        priceBought.setText(price);
 
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
+        JsonObjectRequest jor = new JsonObjectRequest(String.format("https://finnhub.io/api/v1/quote?symbol=%s&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g", symbol),
+                null, response -> {
+                    try {
+                        String apiShotResult = response.get("c").toString();
+                        Log.d("response", apiShotResult);
+
+                        TextView currentPrice = newLot.findViewById(R.id.current_price_tv);
+                        currentPrice.setText(String.format("%s$", apiShotResult));
+
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, error -> {
         });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jor);
+
+    }
+    public void cacheSymbols() throws IOException {
+        JsonObjectRequest jor = new JsonObjectRequest("https://finnhub.io/api/v1/search?q=apple&token=cg8tlupr01qk68o7pk30cg8tlupr01qk68o7pk3g",
+                null, response -> {
+                    File internalStorageDir = getFilesDir();
+                    File myFile = new File(internalStorageDir, "symbols.json");
+
+                    FileOutputStream fos = null;
+                    try {
+                        fos = new FileOutputStream(myFile);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, error -> {
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jor);
+    }
+
+    public void deleteLot(View v){
+        rootLayout.removeView((View) v.getParent());
     }
 
 }
