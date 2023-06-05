@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +43,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     Button btn_addView;
@@ -90,13 +92,13 @@ public class MainActivity extends AppCompatActivity {
         View newLot = getLayoutInflater().inflate(R.layout.newlot, null);
         rootLayout.addView(newLot);
         newLot.setTag(symbol);
-        TextView lotSymbol = newLot.findViewById(R.id.symbol_tv);
+        TextView lotSymbol = newLot.findViewById(R.id.chSymbol);
         lotSymbol.setText(symbol);
 
-        TextView lotAmount = newLot.findViewById(R.id.amount_tv);
+        TextView lotAmount = newLot.findViewById(R.id.chAmount);
         lotAmount.setText(amount);
 
-        TextView priceBought = newLot.findViewById(R.id.price_bought_tv);
+        TextView priceBought = newLot.findViewById(R.id.chPricebought);
         priceBought.setText(price);
 
 
@@ -106,9 +108,21 @@ public class MainActivity extends AppCompatActivity {
                         String apiShotResult = response.get("c").toString();
                         Log.d("response", apiShotResult);
 
-                        TextView currentPrice = newLot.findViewById(R.id.current_price_tv);
+                        TextView currentPrice = newLot.findViewById(R.id.chCurrentprice);
                         currentPrice.setText(String.format("%s$", apiShotResult));
 
+                        if (!apiShotResult.equals("")){
+                            double bilansAmount = (Integer.parseInt(amount) * Double.parseDouble(apiShotResult) - Double.parseDouble(amount)*Integer.parseInt(price));
+                            TextView bilans = newLot.findViewById(R.id.chBilans);
+                            bilans.setText(String.format(Locale.ENGLISH, "%.2f", bilansAmount));
+                            if (bilansAmount >= 0){
+                                bilans.setTextColor(Color.parseColor("#7CFC00"));
+                            }
+                            else{
+                                bilans.setTextColor(Color.parseColor("#FF0000"));
+                            }
+
+                        }
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }

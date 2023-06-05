@@ -14,9 +14,17 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:text="symbol"
+        android:text="Symbol"
         android:textColor="@android:color/black"
         android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/chSymbol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textColor="@android:color/black"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/amount_tv"
@@ -24,9 +32,16 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:text="ilosc"
-        android:textColor="@android:color/darker_gray"
+        android:text="Ilość"
+        android:textColor="@android:color/black"
         android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/chAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/price_bought_tv"
@@ -34,9 +49,16 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:text="cena_zakupu"
-        android:textColor="@android:color/darker_gray"
+        android:text="Cena zakupu"
+        android:textColor="@android:color/black"
         android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/chPricebought"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/current_price_tv"
@@ -44,9 +66,16 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:text="obecna cena"
-        android:textColor="@android:color/darker_gray"
+        android:text="Obecna cena"
+        android:textColor="@android:color/black"
         android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/chCurrentprice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/bilans_tv"
@@ -54,9 +83,16 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_weight="0"
-        android:text="bilans"
-        android:textColor="@android:color/darker_gray"
+        android:text="Bilans"
+        android:textColor="@android:color/black"
         android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/chBilans"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/deleteLot_btn"
