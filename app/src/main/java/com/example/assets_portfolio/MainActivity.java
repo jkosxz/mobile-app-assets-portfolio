@@ -156,4 +156,9 @@ public class MainActivity extends AppCompatActivity {
         rootLayout.removeView((View) v.getParent());
     }
 
+    public void goToCalendar(View v){
+        Intent i = new Intent(MainActivity.this, CalendarActivity.class);
+        startActivity(i);
+    }
+
 }
